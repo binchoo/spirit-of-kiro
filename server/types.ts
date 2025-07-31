@@ -86,4 +86,35 @@ export interface BuyDiscardedMessage {
     };
 }
 
-export type WebSocketMessage = SignupMessage | SigninMessage | PullItemMessage | ListInventoryMessage | DiscardItemMessage | MoveItemMessage | UseSkillMessage | SellItemMessage | FetchPersonaMessage | PeekDiscardedMessage | BuyDiscardedMessage;
+export interface ForgotPasswordMessage {
+    type: 'forgot_password';
+    body: {
+        email: string;
+    };
+}
+
+export interface ResetPasswordMessage {
+    type: 'reset_password';
+    body: {
+        email: string;
+        confirmationCode: string;
+        newPassword: string;
+    };
+}
+
+export interface ResendVerificationMessage {
+    type: 'resend_verification';
+    body: {
+        email: string;
+    };
+}
+
+export interface VerifyEmailMessage {
+    type: 'verify_email';
+    body: {
+        email: string;
+        confirmationCode: string;
+    };
+}
+
+export type WebSocketMessage = SignupMessage | SigninMessage | PullItemMessage | ListInventoryMessage | DiscardItemMessage | MoveItemMessage | UseSkillMessage | SellItemMessage | FetchPersonaMessage | PeekDiscardedMessage | BuyDiscardedMessage | ForgotPasswordMessage | ResetPasswordMessage | ResendVerificationMessage | VerifyEmailMessage;

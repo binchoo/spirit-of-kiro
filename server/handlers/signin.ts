@@ -66,6 +66,19 @@ export default async function handleSignin(state: ConnectionState, data: SigninM
     };
   } catch (error: any) {
     console.error('Signin error:', error);
+    
+    // Handle unverified user specifically
+    if (error.name === 'UserNotConfirmedException') {
+      return {
+        type: "signin_unverified",
+        body: {
+          message: "Please verify your email address before signing in.",
+          email: username,
+          canResendVerification: true
+        }
+      };
+    }
+    
     return {
       type: "signin_failure",
       body: error.message

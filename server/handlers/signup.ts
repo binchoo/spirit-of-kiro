@@ -1,8 +1,7 @@
 import { SignupMessage, ConnectionState } from '../types';
 import { COGNITO_CONFIG } from '../config';
 import { 
-  SignUpCommand, 
-  AdminConfirmSignUpCommand,
+  SignUpCommand,
   CognitoIdentityProviderClient 
 } from '@aws-sdk/client-cognito-identity-provider';
 
@@ -33,7 +32,7 @@ export default async function handleSignup(state: ConnectionState, data: SignupM
   }
 
   try {
-    // First, sign up the user
+    // Sign up the user without auto-confirmation
     const signUpCommand = new SignUpCommand({
       ClientId: COGNITO_CONFIG.clientId,
       Username: username,
@@ -52,23 +51,13 @@ export default async function handleSignup(state: ConnectionState, data: SignupM
 
     const signUpResult = await cognitoClient.send(signUpCommand);
 
-    // Then, automatically confirm the user
-    const confirmCommand = new AdminConfirmSignUpCommand({
-      UserPoolId: COGNITO_CONFIG.userPoolId,
-      Username: username
-    });
-
-    await cognitoClient.send(confirmCommand);
-
-    state.userId = signUpResult.UserSub;
-    state.username = username;
-
+    // Return pending verification status instead of auto-confirming
     return {
-      type: "signup_success",
+      type: "signup_pending_verification",
       body: { 
-        username, 
+        username,
         userId: signUpResult.UserSub,
-        userConfirmed: true
+        message: "Please check your email for a verification link to complete your account setup."
       }
     };
   } catch (error: any) {

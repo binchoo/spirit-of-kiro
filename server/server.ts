@@ -12,8 +12,12 @@ import handleSellItem from './handlers/sell-item';
 import handleFetchPersona from './handlers/fetch-persona';
 import handlePeekDiscarded from './handlers/peek-discarded';
 import handleBuyDiscarded from './handlers/buy-discarded';
+import handleForgotPassword from './handlers/forgot-password';
+import handleResetPassword from './handlers/reset-password';
+import handleResendVerification from './handlers/resend-verification';
+import handleVerifyEmail from './handlers/verify-email';
 import { formatMessage } from './utils/message';
-import { WebSocketMessage, SignupMessage, SigninMessage, PullItemMessage, ListInventoryMessage, DiscardItemMessage, MoveItemMessage, UseSkillMessage, SellItemMessage, FetchPersonaMessage, PeekDiscardedMessage, BuyDiscardedMessage, ConnectionState } from './types';
+import { WebSocketMessage, SignupMessage, SigninMessage, PullItemMessage, ListInventoryMessage, DiscardItemMessage, MoveItemMessage, UseSkillMessage, SellItemMessage, FetchPersonaMessage, PeekDiscardedMessage, BuyDiscardedMessage, ForgotPasswordMessage, ResetPasswordMessage, ResendVerificationMessage, VerifyEmailMessage, ConnectionState } from './types';
 import * as config from './config';
 
 interface WebSocketData {
@@ -141,6 +145,22 @@ export default {
           break;
         case 'buy-discarded':
           result = await handleBuyDiscarded(ws.data.state, data as BuyDiscardedMessage);
+          ws.send(formatMessage(result.type, result.body));
+          break;
+        case 'forgot_password':
+          result = await handleForgotPassword(ws.data.state, data as ForgotPasswordMessage);
+          ws.send(formatMessage(result.type, result.body));
+          break;
+        case 'reset_password':
+          result = await handleResetPassword(ws.data.state, data as ResetPasswordMessage);
+          ws.send(formatMessage(result.type, result.body));
+          break;
+        case 'resend_verification':
+          result = await handleResendVerification(ws.data.state, data as ResendVerificationMessage);
+          ws.send(formatMessage(result.type, result.body));
+          break;
+        case 'verify_email':
+          result = await handleVerifyEmail(ws.data.state, data as VerifyEmailMessage);
           ws.send(formatMessage(result.type, result.body));
           break;
         default:
