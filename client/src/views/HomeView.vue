@@ -1,4 +1,18 @@
 <script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
+
+// Import ghost images statically
+import ghostSouth from '../assets/kiro-ghost/south.png'
+import ghostEast from '../assets/kiro-ghost/east.png'
+import ghostNorth from '../assets/kiro-ghost/north.png'
+import ghostSouthwest from '../assets/kiro-ghost/southwest.png'
+import ghostNortheast from '../assets/kiro-ghost/northeast.png'
+
+// Import demo images
+import dispenserImage from '../assets/dispenser.png'
+import workbenchImage from '../assets/workbench.png'
+import sellTableImage from '../assets/sell-table.png'
+
 const openSourceCode = () => {
   window.open('https://github.com/kirodotdev/spirit-of-kiro/', '_blank')
 }
@@ -6,334 +20,692 @@ const openSourceCode = () => {
 const openGuide = () => {
   window.open('https://kiro.dev/docs/guides/learn-by-playing/', '_blank')
 }
+
+// Animation states
+const isLoaded = ref(false)
+const currentGhostIndex = ref(0)
+
+const ghostImages = [
+  { name: 'south', src: ghostSouth },
+  { name: 'east', src: ghostEast },
+  { name: 'north', src: ghostNorth },
+  { name: 'southwest', src: ghostSouthwest },
+  { name: 'northeast', src: ghostNortheast }
+]
+
+const currentGhostImage = computed(() => ghostImages[currentGhostIndex.value].src)
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 300)
+  
+  // Cycle through ghost images for subtle animation
+  setInterval(() => {
+    currentGhostIndex.value = (currentGhostIndex.value + 1) % ghostImages.length
+  }, 4000)
+})
 </script>
 
 <template>
-  <div class="home">
-    <div class="hero">
+  <div class="zen-garden" :class="{ loaded: isLoaded }">
+    <!-- Zen background elements -->
+    <div class="zen-background">
+      <div class="sand-ripples"></div>
+      <div class="floating-leaves">
+        <div class="leaf" v-for="n in 8" :key="n"></div>
+      </div>
+    </div>
+
+    <!-- Hero section -->
+    <section class="hero">
       <div class="hero-content">
-        <img src="../assets/kiro-ghost/south.png" alt="Ghost" class="ghost-image" />
+        <div class="zen-circle">
+          <div class="inner-circle">
+            <img 
+              :src="currentGhostImage" 
+              alt="Kiro Spirit" 
+              class="zen-ghost" 
+            />
+          </div>
+        </div>
         <div class="hero-text">
-          <h1>Spirit of Kiro</h1>
-          <p class="tagline">Imagine endless possibilities</p>
-          <div class="button-group">
-            <router-link to="/play" class="play-button">
-              Start Exploring
+          <h1 class="zen-title">Spirit of Kiro</h1>
+          <p class="zen-subtitle">Where mindful creation meets infinite possibility</p>
+          <p class="zen-description">A tranquil crafting sanctuary powered by artificial intelligence</p>
+          
+          <div class="action-group">
+            <router-link to="/play" class="primary-action">
+              Begin Journey
             </router-link>
-            <div class="utility-buttons">
-              <button class="source-button" @click="openSourceCode">Source</button>
-              <button class="guide-button" @click="openGuide">Guide</button>
+            <div class="secondary-actions">
+              <button class="zen-button" @click="openSourceCode">Source</button>
+              <button class="zen-button" @click="openGuide">Guide</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="content">
-      <div class="section">
-        <p class="large-text">Every item tells a story. Every discovery reveals a new world. Step into a realm where forgotten objects find new purpose.</p>
+    <!-- Philosophy section -->
+    <section class="philosophy">
+      <div class="philosophy-content">
+        <h2 class="section-heading">The Art of Digital Crafting</h2>
+        <p class="philosophy-text">
+          In this peaceful workshop, every creation emerges from the harmony between human intention and artificial wisdom. 
+          Each item carries its own essence, waiting to be discovered and transformed through mindful interaction.
+        </p>
       </div>
+    </section>
 
-      <div class="features">
-        <div class="feature">
-          <h3>Unique Treasures</h3>
-          <p>Every AI generated item is unique. Each discovery is yours alone.</p>
-        </div>
-        <div class="feature">
-          <h3>Infinite Crafting</h3>
-          <p>Combine items into complex creations or break them down to their quantum essence.</p>
-        </div>
-        <div class="feature">
-          <h3>Dynamic Interactions</h3>
-          <p>Watch as your discoveries come alive with unexpected behaviors and reactions.</p>
-        </div>
+    <!-- Features as zen principles -->
+    <section class="principles">
+      <div class="principle-card">
+        <div class="principle-icon">🌸</div>
+        <h3>Infinite Discovery</h3>
+        <p>Each item blooms with unique properties, generated by AI to surprise and inspire your creative journey.</p>
       </div>
+      <div class="principle-card">
+        <div class="principle-icon">🍃</div>
+        <h3>Mindful Transformation</h3>
+        <p>Craft with intention as intelligent systems guide your creations toward unexpected beauty and purpose.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🪨</div>
+        <h3>Balanced Exchange</h3>
+        <p>Find harmony in the cycle of creation and trade, where AI wisdom values your crafted treasures.</p>
+      </div>
+    </section>
 
-      <div class="section">
-        <h2>Your journey awaits.</h2>
-        <p class="large-text">Collect. Examine. Transform. Every action shapes your experience in this ever-evolving workshop.</p>
+    <!-- Workshop preview -->
+    <section class="workshop-preview">
+      <h2 class="section-heading">Your Sacred Workshop</h2>
+      <div class="workshop-stations">
+        <div class="station">
+          <div class="station-image">
+            <img :src="dispenserImage" alt="Discovery Station" />
+          </div>
+          <h4>Discover</h4>
+          <p>Draw inspiration from the endless well of possibilities</p>
+        </div>
+        <div class="station">
+          <div class="station-image">
+            <img :src="workbenchImage" alt="Creation Station" />
+          </div>
+          <h4>Create</h4>
+          <p>Transform materials with mindful intention and AI guidance</p>
+        </div>
+        <div class="station">
+          <div class="station-image">
+            <img :src="sellTableImage" alt="Exchange Station" />
+          </div>
+          <h4>Share</h4>
+          <p>Complete the cycle by sharing your creations with the world</p>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="invitation">
+      <div class="invitation-content">
+        <h2>Enter the Garden</h2>
+        <p>Your workshop awaits in perfect stillness, ready to bloom with your creative energy.</p>
+        <router-link to="/play" class="zen-cta">
+          Begin Crafting
+        </router-link>
+      </div>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.home {
+.zen-garden {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-  color: white;
-  text-align: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #f5f5f0 0%, #e8e6e0 50%, #d4d2c8 100%);
+  color: #2c2c2c;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  position: relative;
+  overflow-x: hidden;
 }
 
-.hero {
-  padding: 6rem 2rem 3rem;
+.zen-garden.loaded .hero-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.zen-garden.loaded .principle-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Zen background elements */
+.zen-background {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 1200px;
-  min-height: 80vh;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sand-ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(139, 125, 107, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(139, 125, 107, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(139, 125, 107, 0.06) 1px, transparent 1px);
+  background-size: 200px 200px, 300px 300px, 150px 150px;
+  animation: gentle-drift 60s linear infinite;
+}
+
+@keyframes gentle-drift {
+  0% { transform: translateX(0) translateY(0); }
+  100% { transform: translateX(-50px) translateY(-30px); }
+}
+
+.floating-leaves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.leaf {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(139, 125, 107, 0.3);
+  border-radius: 0 100% 0 100%;
+  animation: float-leaf 20s linear infinite;
+}
+
+.leaf:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 25s; }
+.leaf:nth-child(2) { left: 20%; animation-delay: 5s; animation-duration: 30s; }
+.leaf:nth-child(3) { left: 30%; animation-delay: 10s; animation-duration: 22s; }
+.leaf:nth-child(4) { left: 50%; animation-delay: 15s; animation-duration: 28s; }
+.leaf:nth-child(5) { left: 70%; animation-delay: 8s; animation-duration: 26s; }
+.leaf:nth-child(6) { left: 80%; animation-delay: 12s; animation-duration: 24s; }
+.leaf:nth-child(7) { left: 90%; animation-delay: 18s; animation-duration: 32s; }
+.leaf:nth-child(8) { left: 60%; animation-delay: 3s; animation-duration: 27s; }
+
+@keyframes float-leaf {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Hero section */
+.hero {
+  padding: 8rem 2rem 6rem;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.content {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 2rem 6rem;
-}
-
-h1 {
-  font-size: 5.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
-}
-
-h2 {
-  font-size: 3rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-}
-
-.tagline {
-  font-size: 1.8rem;
-  color: #888;
-  margin-bottom: 2.5rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.large-text {
-  font-size: 1.4rem;
-  line-height: 1.4;
-  color: #888;
-  max-width: 800px;
-  margin: 0 auto 3rem;
-}
-
-.section {
-  margin-bottom: 6rem;
-  padding: 0 2rem;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin: 3rem 0;
-  padding: 0 2rem;
-}
-
-.feature {
-  padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.02);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.feature:hover {
-  transform: translateY(-4px);
-  background-color: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.feature h3 {
-  margin-bottom: 1rem;
-  color: #fff;
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.feature p {
-  font-size: 1.1rem;
-  color: #888;
-  line-height: 1.6;
-}
-
-.play-button {
-  display: inline-block;
-  padding: 1.2rem 4rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: white;
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.2);
-}
-
-.play-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(76, 175, 80, 0.3);
-  background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.utility-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.source-button {
-  padding: 0.8rem 2rem;
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: 0 2px 10px rgba(33, 150, 243, 0.2);
-}
-
-.source-button:hover {
-  background-color: #1976D2;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-}
-
-.guide-button {
-  padding: 0.8rem 2rem;
-  background-color: #FF9800;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
-}
-
-.guide-button:hover {
-  background-color: #F57C00;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+  min-height: 90vh;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
+  align-items: center;
+  gap: 6rem;
   max-width: 1200px;
-  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.zen-circle {
   position: relative;
+  width: 280px;
+  height: 280px;
+  border: 3px solid rgba(139, 125, 107, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.inner-circle {
+  width: 180px;
+  height: 180px;
+  border: 2px solid rgba(139, 125, 107, 0.6);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 245, 240, 0.8) 0%, rgba(232, 230, 224, 0.6) 100%);
+  animation: zen-pulse 4s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-ghost {
+  width: 120px;
+  height: auto;
+  filter: sepia(30%) saturate(60%) brightness(95%) hue-rotate(20deg);
+  animation: zen-float 6s ease-in-out infinite;
+  transition: filter 0.5s ease;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes zen-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes zen-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
 .hero-text {
   flex: 1;
+  text-align: left;
+}
+
+.zen-title {
+  font-size: 4.5rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  color: #3a3a3a;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.zen-subtitle {
+  font-size: 1.6rem;
+  color: #8b7d6b;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.zen-description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.primary-action {
+  display: inline-block;
+  padding: 1.2rem 3rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #8b7d6b 0%, #6b5d4f 100%);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 16px rgba(139, 125, 107, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 125, 107, 0.4);
+  background: linear-gradient(135deg, #9a8c7a 0%, #7a6c5e 100%);
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.zen-button {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  border: 1px solid rgba(139, 125, 107, 0.5);
+  color: #8b7d6b;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.zen-button:hover {
+  background: rgba(139, 125, 107, 0.1);
+  border-color: #8b7d6b;
+  color: #6b5d4f;
+}
+
+/* Philosophy section */
+.philosophy {
+  padding: 6rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
   position: relative;
+  z-index: 1;
 }
 
-.ghost-image {
-  width: 180px;
-  height: auto;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
-  position: absolute;
-  left: -160px;
-  top: 0;
-  animation: float 2s ease-in-out infinite;
+.philosophy-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+.section-heading {
+  font-size: 2.8rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+  color: #3a3a3a;
+  letter-spacing: -0.01em;
 }
 
+.philosophy-text {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: #555;
+  font-style: italic;
+}
+
+/* Principles section */
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.principle-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 125, 107, 0.2);
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.principle-card:nth-child(1) { transition-delay: 0.1s; }
+.principle-card:nth-child(2) { transition-delay: 0.2s; }
+.principle-card:nth-child(3) { transition-delay: 0.3s; }
+
+.principle-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 32px rgba(139, 125, 107, 0.2);
+}
+
+.principle-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.principle-card h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: #3a3a3a;
+  letter-spacing: 0.5px;
+}
+
+.principle-card p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Workshop preview */
+.workshop-preview {
+  padding: 6rem 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.workshop-stations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  margin: 4rem auto 0;
+  max-width: 1000px;
+}
+
+.station {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(139, 125, 107, 0.1);
+  transition: all 0.3s ease;
+}
+
+.station:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(139, 125, 107, 0.15);
+}
+
+.station-image {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.station-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: sepia(20%) saturate(80%) brightness(90%);
+}
+
+.station h4 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: #3a3a3a;
+  letter-spacing: 0.5px;
+}
+
+.station p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Invitation section */
+.invitation {
+  padding: 6rem 2rem;
+  text-align: center;
+  background: rgba(139, 125, 107, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.invitation-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.invitation h2 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  color: #3a3a3a;
+}
+
+.invitation p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.zen-cta {
+  display: inline-block;
+  padding: 1.4rem 4rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #8b7d6b 0%, #6b5d4f 100%);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(139, 125, 107, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.zen-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(139, 125, 107, 0.4);
+  background: linear-gradient(135deg, #9a8c7a 0%, #7a6c5e 100%);
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
   .hero {
-    padding: 4rem 1rem 2rem;
+    padding: 4rem 1rem 3rem;
     min-height: 70vh;
-  }
-
-  .content {
-    padding: 0 1rem 4rem;
-  }
-
-  h1 {
-    font-size: 3.5rem;
-  }
-
-  h2 {
-    font-size: 2.2rem;
-  }
-
-  .tagline {
-    font-size: 1.4rem;
-    margin-bottom: 2rem;
-  }
-
-  .large-text {
-    font-size: 1.2rem;
-  }
-
-  .features {
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
-  }
-
-  .section {
-    padding: 0 1rem;
-    margin-bottom: 3rem;
-  }
-
-  .play-button {
-    padding: 1rem 3rem;
-    font-size: 1.3rem;
   }
 
   .hero-content {
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
+    text-align: center;
   }
 
-  .ghost-image {
-    position: relative;
-    left: 0;
-    top: 0;
+  .zen-circle {
+    width: 200px;
+    height: 200px;
+  }
+
+  .inner-circle {
     width: 120px;
-    margin: 0 auto;
+    height: 120px;
   }
 
-  .utility-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
+  .zen-ghost {
+    width: 80px;
   }
 
-  .source-button,
-  .guide-button {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
+  .zen-title {
+    font-size: 3rem;
+  }
+
+  .section-heading {
+    font-size: 2.2rem;
+  }
+
+  .principles {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 4rem 1rem;
+  }
+
+  .workshop-stations {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .philosophy {
+    padding: 4rem 1rem;
+  }
+
+  .invitation {
+    padding: 4rem 1rem;
+  }
+
+  .secondary-actions {
+    justify-content: center;
+  }
+
+  .action-group {
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .zen-title {
+    font-size: 2.5rem;
+  }
+
+  .zen-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .zen-description {
+    font-size: 1.1rem;
+  }
+
+  .primary-action {
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+  }
+
+  .zen-circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .inner-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .zen-ghost {
+    width: 60px;
+  }
+
+  .principle-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .station-image img {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>

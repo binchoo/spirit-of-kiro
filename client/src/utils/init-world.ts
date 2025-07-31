@@ -19,6 +19,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 1,
     depth: 1,
     height: 1,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -41,6 +42,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     col: 2,
     width: gridSize - 2,
     depth: 1,
+    interactive: false,
     props: {}
   })
 
@@ -53,6 +55,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: gridSize,
     depth: 7.9,
     height: 6,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -75,6 +78,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 3, // Increased width to 3
     depth: gridSize,
     height: 1000,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -97,6 +101,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 3, // Increased width to extend 2 tiles out of the play area
     depth: gridSize,
     height: 1000,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -119,6 +124,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 8,
     depth: 2.5,
     height: 5,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -141,6 +147,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 8,
     depth: 2.5,
     height: 5,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -163,6 +170,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 4,
     depth: .25,
     height: 1,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -185,6 +193,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 4,
     depth: 2,
     height: 1,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,
@@ -207,6 +216,7 @@ export function setupGameObjects(gameStore: any, gridSize: number) {
     width: 4,
     depth: .1,
     height: 1,
+    interactive: false,
     physics: {
       active: false,
       angle: 0,

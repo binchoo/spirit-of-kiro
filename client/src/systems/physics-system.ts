@@ -53,6 +53,18 @@ export class PhysicsSystem {
         }
       }
     });
+
+    // Additional protection for focus/blur events (covers more edge cases)
+    window.addEventListener('blur', () => {
+      this.stop();
+    });
+
+    window.addEventListener('focus', () => {
+      this.lastTimestamp = performance.now();
+      if (this.hasActivePhysics.value && this.animationFrameId === null) {
+        this.start();
+      }
+    });
   }
 
   start() {
@@ -78,8 +90,15 @@ export class PhysicsSystem {
     this.lastTimestamp = timestamp;
     
     // Cap delta time to prevent physics instability from large jumps
-    const MAX_DELTA_TIME = 1/30; // Cap at ~33ms (30 FPS equivalent)
+    // This is especially important when returning from background tabs
+    const MAX_DELTA_TIME = 1/60; // Cap at ~16.67ms (60 FPS equivalent)
     deltaTime = Math.min(deltaTime, MAX_DELTA_TIME);
+    
+    // Additional protection: if delta time is suspiciously large (>100ms),
+    // it likely means we're returning from a background tab - use minimal delta
+    if (deltaTime > 0.1) {
+      deltaTime = 1/60; // Use 60 FPS frame time as fallback
+    }
     
     // Update physics for all objects
     this.updatePhysics(deltaTime);

@@ -55,16 +55,29 @@ bun test                        # Run tests with JUnit output
 bun run bootstrap-dynamodb      # Setup local DynamoDB tables
 ```
 
+### Item Images Service Commands
+```bash
+cd item-images
+bun run dev          # Start with hot reload
+bun run start        # Production start
+bun test             # Run tests
+```
+
 ### Infrastructure Setup
 ```bash
 # Deploy Cognito resources
 ./scripts/deploy-cognito.sh game-auth
 
-# Start containerized stack
+# Start containerized stack (Docker/Podman)
 podman compose build && podman compose up --watch
+# OR with Docker:
+docker compose build && docker compose up --watch
 
 # Bootstrap local DynamoDB (first time only)
 podman exec server bun run /app/bootstrap-local-dynamodb.js
+
+# Alternative: Use scripts directly
+./scripts/bootstrap-local-dynamodb.js
 ```
 
 ## Code Quality

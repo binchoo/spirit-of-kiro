@@ -12,7 +12,7 @@ export interface GameObject {
   depth?: number
   playerIsNear?: boolean
   physics?: PhysicsProperties
-  interactive?: boolean
+  interactive: boolean
   props: any
 }
 
