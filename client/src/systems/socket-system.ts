@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import { generateUUID } from '../utils/uuid'
 
 export class SocketSystem {
   private ws: Ref<WebSocket | null>
@@ -102,7 +103,7 @@ export class SocketSystem {
    * @returns A unique listener ID that can be used to remove the listener
    */
   addEventListener(eventType: string, callback: (data?: any, eventType?: string) => void): string {
-    const listenerId = crypto.randomUUID()
+    const listenerId = generateUUID()
 
     if (!this.eventListeners.has(eventType)) {
       this.eventListeners.set(eventType, new Map())
