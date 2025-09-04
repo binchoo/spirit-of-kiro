@@ -1,50 +1,57 @@
+<script setup lang="ts">
+const openSourceCode = () => {
+  window.open('https://github.com/kirodotdev/spirit-of-kiro/', '_blank')
+}
+
+const openGuide = () => {
+  window.open('https://kiro.dev/docs/guides/learn-by-playing/', '_blank')
+}
+</script>
+
 <template>
-  <div class="home" @mousemove="updateMousePosition" @click="createExplosion">
-    <!-- Background particles -->
-    <div class="particles">
-      <div v-for="i in 20" :key="i" class="particle" :style="getParticleStyle(i)"></div>
-    </div>
-
-    <!-- Multiple Kiro Ghosts floating around -->
-    <div class="kiro-ghost main-ghost" :style="mainGhostStyle">
-      <img src="/src/assets/kiro-ghost/south.png" alt="Kiro Ghost" class="ghost-image" />
-      <div class="ghost-glow"></div>
-    </div>
-
-    <div class="kiro-ghost side-ghost-1">
-      <img src="/src/assets/kiro-ghost/east.png" alt="Kiro Ghost" class="ghost-image" />
-      <div class="ghost-glow"></div>
-    </div>
-
-    <div class="kiro-ghost side-ghost-2">
-      <img src="/src/assets/kiro-ghost/northeast.png" alt="Kiro Ghost" class="ghost-image" />
-      <div class="ghost-glow"></div>
-    </div>
-
-    <div class="kiro-ghost side-ghost-3">
-      <img src="/src/assets/kiro-ghost/southwest.png" alt="Kiro Ghost" class="ghost-image" />
-      <div class="ghost-glow"></div>
-    </div>
-
-    <!-- Explosion particles -->
-    <div v-for="explosion in explosions" :key="explosion.id" class="explosion" :style="explosion.style">
-      <div v-for="i in 12" :key="i" class="explosion-particle" :style="getExplosionParticleStyle(i)"></div>
-    </div>
-
-    <!-- Main content -->
+  <div class="home">
     <div class="hero">
       <div class="hero-content">
+        <img src="../assets/kiro-ghost/south.png" alt="Ghost" class="ghost-image" />
         <div class="hero-text">
-          <h1 class="neon-title">
-            <span v-for="(char, index) in titleChars" :key="index" 
-                  :style="{ animationDelay: index * 0.1 + 's' }" 
-                  class="char">{{ char }}</span>
-          </h1>
-          <router-link to="/play" class="neon-button" @click="playClickSound">
-            <span class="button-text">👻 ENTER THE SPIRIT REALM 🌟</span>
-            <div class="button-glow"></div>
-          </router-link>
+          <h1>Spirit of Kiro</h1>
+          <p class="tagline">Imagine endless possibilities</p>
+          <div class="button-group">
+            <router-link to="/play" class="play-button">
+              Start Exploring
+            </router-link>
+            <div class="utility-buttons">
+              <button class="source-button" @click="openSourceCode">Source</button>
+              <button class="guide-button" @click="openGuide">Guide</button>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <p class="large-text">Every item tells a story. Every discovery reveals a new world. Step into a realm where forgotten objects find new purpose.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <h3>Unique Treasures</h3>
+          <p>Every AI generated item is unique. Each discovery is yours alone.</p>
+        </div>
+        <div class="feature">
+          <h3>Infinite Crafting</h3>
+          <p>Combine items into complex creations or break them down to their quantum essence.</p>
+        </div>
+        <div class="feature">
+          <h3>Dynamic Interactions</h3>
+          <p>Watch as your discoveries come alive with unexpected behaviors and reactions.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Your journey awaits.</h2>
+        <p class="large-text">Collect. Examine. Transform. Every action shapes your experience in this ever-evolving workshop.</p>
       </div>
     </div>
   </div>
@@ -56,405 +63,277 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: radial-gradient(ellipse at center, #1a0033 0%, #000000 70%);
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
   color: white;
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  overflow: hidden;
-  position: relative;
 }
 
-/* Kiro Ghost */
-.kiro-ghost {
-  position: fixed;
-  width: 120px;
-  height: 120px;
-  z-index: 10;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.main-ghost {
-  animation: float 4s ease-in-out infinite;
-}
-
-.side-ghost-1 {
-  top: 15%;
-  right: 15%;
-  animation: float 5s ease-in-out infinite reverse;
-  opacity: 0.7;
-}
-
-.side-ghost-2 {
-  bottom: 20%;
-  left: 10%;
-  animation: float 6s ease-in-out infinite;
-  opacity: 0.6;
-}
-
-.side-ghost-3 {
-  top: 60%;
-  right: 25%;
-  animation: float 4.5s ease-in-out infinite reverse;
-  opacity: 0.5;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-20px) rotate(2deg); }
-  50% { transform: translateY(-10px) rotate(0deg); }
-  75% { transform: translateY(-25px) rotate(-2deg); }
-}
-
-.ghost-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
-  animation: ghostGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes ghostGlow {
-  0% { 
-    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
-  }
-  100% { 
-    filter: drop-shadow(0 0 40px rgba(0, 255, 255, 1)) drop-shadow(0 0 60px rgba(0, 255, 255, 0.6));
-  }
-}
-
-.ghost-glow {
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: pulse 3s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 0.8; }
-}
-
-/* Background particles */
-.particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: #00ffff;
-  border-radius: 50%;
-  animation: twinkle 2s infinite ease-in-out;
-  box-shadow: 0 0 10px #00ffff;
-}
-
-/* Particles will be positioned dynamically via JavaScript */
-
-@keyframes twinkle {
-  0%, 100% { 
-    opacity: 0.3; 
-    transform: scale(1); 
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1.5); 
-  }
-}
-
-/* Hero section */
 .hero {
-  padding: 2rem;
+  padding: 6rem 2rem 3rem;
   width: 100%;
-  max-width: 800px;
-  min-height: 100vh;
+  max-width: 1200px;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 5;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem 6rem;
+}
+
+h1 {
+  font-size: 5.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  font-size: 1.8rem;
+  color: #888;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.large-text {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: #888;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.section {
+  margin-bottom: 6rem;
+  padding: 0 2rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 3rem 0;
+  padding: 0 2rem;
+}
+
+.feature {
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature:hover {
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.feature h3 {
+  margin-bottom: 1rem;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.feature p {
+  font-size: 1.1rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.play-button {
+  display: inline-block;
+  padding: 1.2rem 4rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.2);
+}
+
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.utility-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.source-button {
+  padding: 0.8rem 2rem;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 10px rgba(33, 150, 243, 0.2);
+}
+
+.source-button:hover {
+  background-color: #1976D2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+.guide-button {
+  padding: 0.8rem 2rem;
+  background-color: #FF9800;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
+}
+
+.guide-button:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
 }
 
 .hero-content {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .hero-text {
-  text-align: center;
+  flex: 1;
+  position: relative;
 }
 
-/* Neon title */
-.neon-title {
-  font-size: 4rem;
-  font-weight: 600;
-  margin-bottom: 3rem;
-  color: #00ffff;
-  text-shadow: 
-    0 0 10px #00ffff,
-    0 0 20px #00ffff,
-    0 0 30px #00ffff,
-    0 0 40px #00ffff;
-  font-family: 'Courier New', monospace;
-}
-
-.char {
-  display: inline-block;
-  animation: neonFlicker 2s ease-in-out infinite;
-}
-
-@keyframes neonFlicker {
-  0%, 100% { 
-    opacity: 1;
-    text-shadow: 
-      0 0 10px #00ffff,
-      0 0 20px #00ffff,
-      0 0 30px #00ffff,
-      0 0 40px #00ffff;
-    transform: translateY(0px);
-  }
-  50% { 
-    opacity: 0.8;
-    text-shadow: 
-      0 0 5px #00ffff,
-      0 0 10px #00ffff,
-      0 0 15px #00ffff,
-      0 0 20px #00ffff;
-    transform: translateY(-2px);
-  }
-}
-
-/* Explosion effects */
-.explosion {
-  position: fixed;
-  pointer-events: none;
-  z-index: 20;
-}
-
-.explosion-particle {
+.ghost-image {
+  width: 180px;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #ff00ff;
-  border-radius: 50%;
-  animation: explode 0.8s ease-out forwards;
-  box-shadow: 0 0 12px #ff00ff;
+  left: -160px;
+  top: 0;
+  animation: float 2s ease-in-out infinite;
 }
 
-@keyframes explode {
+@keyframes float {
   0% {
-    transform: scale(1) translate(0, 0);
-    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
   100% {
-    transform: scale(0) translate(var(--dx), var(--dy));
-    opacity: 0;
+    transform: translateY(0);
   }
 }
 
-/* Neon button */
-.neon-button {
-  position: relative;
-  display: inline-block;
-  padding: 1.2rem 3rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: #00ffff;
-  background: transparent;
-  border: 2px solid #00ffff;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  overflow: hidden;
-  box-shadow: 
-    0 0 15px rgba(0, 255, 255, 0.4),
-    inset 0 0 15px rgba(0, 255, 255, 0.1);
-}
-
-.button-text {
-  position: relative;
-  z-index: 2;
-}
-
-.button-glow {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
-}
-
-.neon-button:hover {
-  color: #000;
-  background: #00ffff;
-  box-shadow: 
-    0 0 25px #00ffff,
-    0 0 35px #00ffff,
-    0 0 45px #00ffff;
-  transform: translateY(-3px) scale(1.05);
-}
-
-.neon-button:hover .button-glow {
-  left: 100%;
-}
-
-.neon-button:active {
-  transform: translateY(-1px) scale(1.02);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .neon-title {
-    font-size: 2.5rem;
+  .hero {
+    padding: 4rem 1rem 2rem;
+    min-height: 70vh;
   }
 
-  .neon-button {
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
+  .content {
+    padding: 0 1rem 4rem;
   }
 
-  .kiro-ghost {
-    width: 80px;
-    height: 100px;
-    top: 15%;
-    left: 15%;
+  h1 {
+    font-size: 3.5rem;
   }
 
-  .ghost-body {
-    width: 60px;
-    height: 80px;
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  .tagline {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  .large-text {
+    font-size: 1.2rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+
+  .section {
+    padding: 0 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .play-button {
+    padding: 1rem 3rem;
+    font-size: 1.3rem;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ghost-image {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 120px;
+    margin: 0 auto;
+  }
+
+  .utility-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .source-button,
+  .guide-button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
 </style>
-
-<script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-
-// 반응형 데이터
-const mouseX = ref(0)
-const mouseY = ref(0)
-const ghostX = ref(200)
-const ghostY = ref(200)
-const explosions = ref<Array<{id: number, style: any}>>([])
-let explosionId = 0
-
-// 타이틀 문자 배열
-const titleChars = computed(() => 'Spirit of Kiro'.split(''))
-
-// 마우스 위치 업데이트
-const updateMousePosition = (event: MouseEvent) => {
-  mouseX.value = event.clientX
-  mouseY.value = event.clientY
-  
-  // 메인 고스트가 마우스를 부드럽게 따라다니도록
-  const targetX = event.clientX - 60
-  const targetY = event.clientY - 60
-  
-  ghostX.value += (targetX - ghostX.value) * 0.08
-  ghostY.value += (targetY - ghostY.value) * 0.08
-}
-
-// 메인 고스트 스타일 계산
-const mainGhostStyle = computed(() => ({
-  left: `${ghostX.value}px`,
-  top: `${ghostY.value}px`,
-}))
-
-// 배경 파티클 스타일 (동적 생성)
-const getParticleStyle = (index: number) => {
-  const x = Math.random() * 100
-  const y = Math.random() * 100
-  const delay = Math.random() * 3
-  const size = 2 + Math.random() * 2
-  
-  return {
-    left: `${x}%`,
-    top: `${y}%`,
-    width: `${size}px`,
-    height: `${size}px`,
-    animationDelay: `${delay}s`
-  }
-}
-
-// 폭발 효과 생성
-const createExplosion = (event: MouseEvent) => {
-  const newExplosion = {
-    id: explosionId++,
-    style: {
-      left: `${event.clientX}px`,
-      top: `${event.clientY}px`,
-    }
-  }
-  
-  explosions.value.push(newExplosion)
-  
-  // 0.8초 후 폭발 제거
-  setTimeout(() => {
-    const index = explosions.value.findIndex(exp => exp.id === newExplosion.id)
-    if (index > -1) {
-      explosions.value.splice(index, 1)
-    }
-  }, 800)
-}
-
-// 폭발 파티클 스타일
-const getExplosionParticleStyle = (index: number) => {
-  const angle = (index / 12) * Math.PI * 2
-  const distance = 60 + Math.random() * 40
-  const dx = Math.cos(angle) * distance
-  const dy = Math.sin(angle) * distance
-  
-  return {
-    '--dx': `${dx}px`,
-    '--dy': `${dy}px`,
-    animationDelay: `${Math.random() * 0.2}s`
-  }
-}
-
-// 클릭 사운드
-const playClickSound = () => {
-  try {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-    const oscillator = audioContext.createOscillator()
-    const gainNode = audioContext.createGain()
-    
-    oscillator.connect(gainNode)
-    gainNode.connect(audioContext.destination)
-    
-    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime)
-    oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.15)
-    
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15)
-    
-    oscillator.start(audioContext.currentTime)
-    oscillator.stop(audioContext.currentTime + 0.15)
-  } catch (e) {
-    console.log('Audio not supported')
-  }
-}
-
-// 초기 고스트 위치 설정
-onMounted(() => {
-  ghostX.value = window.innerWidth / 2 - 60
-  ghostY.value = window.innerHeight / 2 - 60
-  console.log('🎭 Kiro Ghost Landing Page Loaded! Welcome to the Spirit Realm! 👻✨')
-})
-</script>
