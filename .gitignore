@@ -1,0 +1,12 @@
+node_modules
+.aiEditorAgent
+.aiEditorAgentDebug
+.DS_Store
+.vscode/
+bun-tests.xml
+.odo
+*.spec.md
+*.code-workspace
+dev.env
+dist
+ash_output
