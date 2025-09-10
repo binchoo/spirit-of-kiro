@@ -2,16 +2,26 @@ import { BedrockRuntimeClient, ConverseCommand, ConverseStreamCommand } from '@a
 
 // Initialize the Bedrock client
 const bedrockClient = new BedrockRuntimeClient({
-  region: 'us-west-2', // Update with your preferred AWS region
+  region: process.env.AWS_REGION,
 });
 
 // Model fallback configuration
-type ModelId = 'us.anthropic.claude-sonnet-4-20250514-v1:0' | 'us.anthropic.claude-3-7-sonnet-20250219-v1:0' | 'us.amazon.nova-pro-v1:0';
-const MODELS: ModelId[] = [
-  //'us.anthropic.claude-sonnet-4-20250514-v1:0',
-  'us.anthropic.claude-3-7-sonnet-20250219-v1:0',
-  'us.amazon.nova-pro-v1:0'
-];
+type ModelId = 'us.anthropic.claude-sonnet-4-20250514-v1:0' | 'us.anthropic.claude-3-7-sonnet-20250219-v1:0' | 'us.amazon.nova-pro-v1:0' | 'apac.anthropic.claude-sonnet-4-20250514-v1:0' | 'apac.anthropic.claude-3-7-sonnet-20250219-v1:0' | 'apac.amazon.nova-pro-v1:0' ;
+
+const getModelsForRegion = (region: string): ModelId[] => {
+  const isApacRegion = region?.startsWith('ap-') || region?.startsWith('us-');
+  return isApacRegion ? [
+    'apac.anthropic.claude-sonnet-4-20250514-v1:0',
+    'apac.anthropic.claude-3-7-sonnet-20250219-v1:0',
+    'apac.amazon.nova-pro-v1:0',
+  ] : [
+    'us.anthropic.claude-sonnet-4-20250514-v1:0',
+    'us.anthropic.claude-3-7-sonnet-20250219-v1:0',
+    'us.amazon.nova-pro-v1:0',
+  ];
+};
+
+const MODELS = getModelsForRegion(process.env.AWS_REGION || 'us-east-1');
 
 // Track model fallback state
 const modelFallbackState = new Map<ModelId, number>();
