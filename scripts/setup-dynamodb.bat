@@ -9,7 +9,24 @@ if "%1"=="" (
 )
 
 set STACK_NAME=%1-dynamodb
-set REGION=us-west-2
+REM Get IMDSv2 token
+for /f "tokens=*" %%i in ('curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" -s') do set TOKEN=%%i
+
+REM Get current region from EC2 metadata using IMDSv2
+for /f "tokens=*" %%i in ('curl -H "X-aws-ec2-metadata-token: !TOKEN!" -s http://169.254.169.254/latest/meta-data/placement/region') do set REGION=%%i
+
+REM If not running on EC2, try to get region from AWS CLI config
+if "%REGION%"=="" (
+    for /f "tokens=*" %%i in ('aws configure get region') do set REGION=%%i
+)
+
+REM If still no region found, use default
+if "%REGION%"=="" (
+    set REGION=us-west-2
+)
+
+echo Setting up Cognito User Pool for stack: %STACK_NAME%
+echo Region: %REGION%
 
 echo Setting up DynamoDB tables for stack: %STACK_NAME%
 echo Region: %REGION%
