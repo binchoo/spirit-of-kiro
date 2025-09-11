@@ -66,7 +66,7 @@ export const REDIS_CONFIG = {
 };
 
 export const ITEM_IMAGES_SERVICE_CONFIG = {
-  url: getEnv('ITEM_IMAGES_SERVICE_URL') || 'https://item-images.nathanpeck.gg',
+  url: getEnv('ITEM_IMAGES_SERVICE_URL') || 'https://item-images.r9s.shop',
 };
 
 export const COGNITO_CONFIG = {
